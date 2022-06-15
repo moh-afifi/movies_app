@@ -6,7 +6,7 @@ import '../../data_layer/models/popular_people_model.dart';
 
 class PersonDetailsView extends StatelessWidget {
   const PersonDetailsView({Key? key, this.model}) : super(key: key);
-  final Result? model;
+  final Results? model;
 
   @override
   Widget build(BuildContext context) {

@@ -7,21 +7,21 @@ class PopularPeopleModel {
   });
 
   int? page;
-  List<Result>? results;
+  List<Results>? results=[];
   int? totalPages;
   int? totalResults;
 
   factory PopularPeopleModel.fromJson(Map<String, dynamic> json) => PopularPeopleModel(
     page: json["page"],
-    results: List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+    results: List<Results>.from(json["results"].map((x) => Results.fromJson(x))),
     totalPages: json["total_pages"],
     totalResults: json["total_results"],
   );
 
 }
 
-class Result {
-  Result({
+class Results {
+  Results({
     this.adult,
     this.gender,
     this.id,
@@ -41,7 +41,7 @@ class Result {
   double? popularity;
   String? profilePath;
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory Results.fromJson(Map<String, dynamic> json) => Results(
     adult: json["adult"],
     gender: json["gender"],
     id: json["id"],

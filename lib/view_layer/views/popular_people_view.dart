@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:squadio_task/controller_layer/popular_people_provider.dart';
 import 'package:squadio_task/view_layer/helpers/popular_people_card.dart';
 import '../../global_helpers/common_error_message.dart';
@@ -15,7 +16,7 @@ class PopularPeopleView extends StatefulWidget {
 
 class _PopularPeopleViewState extends State<PopularPeopleView> {
   Future? future;
-  ScrollController scrollOrderController = ScrollController();
+  late ScrollController _controller;
 
   Future<void> prepareData() async {
     await context.read<PopularPeopleProvider>().getPopularPeople();
@@ -24,24 +25,26 @@ class _PopularPeopleViewState extends State<PopularPeopleView> {
   @override
   void initState() {
     future = prepareData();
+    _controller = ScrollController()
+      ..addListener(() async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        int page = prefs.getInt('page')!;
+        if (_controller.position.pixels ==
+            _controller.position.maxScrollExtent) {
+          if (page < 500) {
+            prefs.setInt('page', page + 1);
+            await context
+                .read<PopularPeopleProvider>()
+                .getPaginationPopularPeople(page + 1);
+          }
+        }
+      });
     super.initState();
-    scrollOrderController.addListener(() async {
-      int page = 1;
-      var popularPeopleProvider =
-          Provider.of<PopularPeopleProvider>(context, listen: false);
-      if (scrollOrderController.position.pixels ==
-          scrollOrderController.position.maxScrollExtent) {
-        page++;
-        popularPeopleProvider.changePaginationLoading(true);
-        await popularPeopleProvider.getPaginationPopularPeople(page);
-        popularPeopleProvider.changePaginationLoading(false);
-      }
-    });
   }
 
   @override
   void dispose() {
-    scrollOrderController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -66,7 +69,7 @@ class _PopularPeopleViewState extends State<PopularPeopleView> {
               future: future,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CommonLoader();
+                  return const Expanded(child: CommonLoader());
                 } else {
                   if (snapshot.hasError) {
                     return const CommonErrorMessage();
@@ -76,18 +79,30 @@ class _PopularPeopleViewState extends State<PopularPeopleView> {
                         return popularPeopleProvider.popularPeopleModel.results!.isEmpty
                             ? const EmptyDataMessage()
                             : Expanded(
-                                child: ListView.builder(
-                                  controller: scrollOrderController,
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  itemCount: popularPeopleProvider
-                                      .popularPeopleModel.results?.length,
-                                  itemBuilder: (context, index) {
-                                    return PopularPeopleCard(
-                                      model: popularPeopleProvider
-                                          .popularPeopleModel.results?[index],
-                                    );
-                                  },
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: ListView.builder(
+                                        controller: _controller,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 5),
+                                        itemCount:
+                                            popularPeopleProvider.list!.length,
+                                        itemBuilder: (context, index) {
+                                          return PopularPeopleCard(
+                                            model: popularPeopleProvider
+                                                .list![index],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    popularPeopleProvider.isPaginationLoading
+                                        ? const SizedBox(
+                                            height: 50,
+                                            width: 50,
+                                            child: CommonLoader())
+                                        : const SizedBox(),
+                                  ],
                                 ),
                               );
                       },
