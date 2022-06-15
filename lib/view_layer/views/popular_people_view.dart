@@ -17,60 +17,82 @@ class PopularPeopleView extends StatefulWidget {
 class _PopularPeopleViewState extends State<PopularPeopleView> {
   Future? future;
   ScrollController scrollOrderController = ScrollController();
-  Future<void> prepareData() async{
-   await context.read<PopularPeopleProvider>().getPopularPeople();
+
+  Future<void> prepareData() async {
+    await context.read<PopularPeopleProvider>().getPopularPeople();
   }
 
   @override
   void initState() {
-    future=prepareData();
+    future = prepareData();
     super.initState();
     scrollOrderController.addListener(() async {
-      int page =1;
-      var popularPeopleProvider = Provider.of<PopularPeopleProvider>(context, listen: false);
-      if (scrollOrderController.position.pixels == scrollOrderController.position.maxScrollExtent) {
-          page++;
-          popularPeopleProvider.changePaginationLoading(true);
-          await popularPeopleProvider.getPaginationPopularPeople(page);
-          popularPeopleProvider.changePaginationLoading(false);
+      int page = 1;
+      var popularPeopleProvider =
+          Provider.of<PopularPeopleProvider>(context, listen: false);
+      if (scrollOrderController.position.pixels ==
+          scrollOrderController.position.maxScrollExtent) {
+        page++;
+        popularPeopleProvider.changePaginationLoading(true);
+        await popularPeopleProvider.getPaginationPopularPeople(page);
+        popularPeopleProvider.changePaginationLoading(false);
       }
     });
   }
+
   @override
   void dispose() {
     scrollOrderController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: FutureBuilder(
-          future: future,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CommonLoader();
-            } else {
-              return Consumer<PopularPeopleProvider>(
-                builder: (context, popularPeopleProvider, child) {
-                  return ListView.builder(
-                    controller: scrollOrderController,
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    itemCount: popularPeopleProvider.popularPeopleModel.results?.length,
-                    itemBuilder: (context, index) {
-                      return PopularPeopleCard(
-                        model: popularPeopleProvider.popularPeopleModel.results?[index],
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.0),
+              child: Text(
+                'TMDB',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff08B5E0),
+                ),
+              ),
+            ),
+            FutureBuilder(
+              future: future,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CommonLoader();
+                } else {
+                  return Consumer<PopularPeopleProvider>(
+                    builder: (context, popularPeopleProvider, child) {
+                      return Expanded(
+                        child: ListView.builder(
+                          controller: scrollOrderController,
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          itemCount: popularPeopleProvider.popularPeopleModel.results?.length,
+                          itemBuilder: (context, index) {
+                            return PopularPeopleCard(
+                              model: popularPeopleProvider.popularPeopleModel.results?[index],
+                            );
+                          },
+                        ),
                       );
                     },
                   );
-                },
-              );
-              if (snapshot.hasError) {
-                // return  Text(snapshot.error.toString());
-                return const CommonErrorMessage();
-              } else {}
-            }
-          },
+                  if (snapshot.hasError) {
+                    // return  Text(snapshot.error.toString());
+                    return const CommonErrorMessage();
+                  } else {}
+                }
+              },
+            ),
+          ],
         ),
       ),
     );

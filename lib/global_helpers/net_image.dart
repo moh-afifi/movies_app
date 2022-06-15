@@ -1,17 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mismar_app/utilities/vars.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../utilities/app_util.dart';
-import '../../utilities/path_util.dart';
+import 'package:squadio_task/utils/api_handler.dart';
 
 class NetImage extends CachedNetworkImage {
-
   NetImage(
-    String src,
-      {
+    String src, {
     Key? key,
     String? url,
     double? height,
@@ -24,16 +18,16 @@ class NetImage extends CachedNetworkImage {
     bool showErrorWidget = true,
   }) : super(
           key: key,
-          imageUrl: Connection.IMG_URL + src,
+          imageUrl: ApiHandler.imageBaseUrl + src,
           width: width,
           height: height,
           fit: fit ?? BoxFit.cover,
           color: color,
           placeholder: (context, url) => errorWidgetIsLoadingWidget
               ? Image.asset(
-                  errorImage ?? PathUtil.appIcon,
-                  height: 75.sp,
-                  width: 75.sp,
+                  errorImage ?? 'images/spare.jpg',
+                  height: 50,
+                  width: 50,
                   // color: ColorUtil.primaryGreen,
                   fit: BoxFit.contain,
                 )
@@ -42,15 +36,14 @@ class NetImage extends CachedNetworkImage {
                   highlightColor: Colors.white,
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: AppUtil.borderRadius6,
+                      borderRadius: BorderRadius.circular(10),
                       color: Colors.grey.withOpacity(0.5),
                     ),
                   ),
                 ),
           errorWidget: (context, url, error) => showErrorWidget
               ? Image.asset(
-                  errorImage ?? PathUtil.appIcon,
-                  // color: ColorUtil.primaryGreen,
+                  errorImage ?? 'images/spare.jpg',
                   fit: errorImageFit ?? BoxFit.contain,
                 )
               : const SizedBox.shrink(),

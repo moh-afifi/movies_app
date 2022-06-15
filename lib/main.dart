@@ -16,6 +16,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Squadio Task',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor:const Color(0xff032541)
+      ),
       home:  ChangeNotifierProvider(
         create: (context) => PopularPeopleProvider(),
         child: const PopularPeopleView(),

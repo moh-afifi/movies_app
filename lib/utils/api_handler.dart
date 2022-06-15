@@ -14,11 +14,11 @@ class ApiHandler {
   factory ApiHandler() => instance;
 
   static const _baseUrl = 'https://api.themoviedb.org/3/';
-  static const imageBaseUrl = 'https://image.tmdb.org/t/p/';
+  static const imageBaseUrl = 'https://image.tmdb.org/t/p/original';
   static const _apiKey = '0656e42add14c54ec59c8109e5d6e50b';
   static const _lang = 'en-US';
 
-  Dio _dio = Dio();
+  final Dio _dio = Dio();
 
   Future<dynamic> call({
     required String path,
@@ -28,7 +28,6 @@ class ApiHandler {
   }) async {
     try {
       final url = '$_baseUrl$path?api_key=$_apiKey&language=$_lang&page=$page';
-      print('$url *********//////////////////*****************************');
       Response response;
       switch (method) {
         case APIMethod.post:

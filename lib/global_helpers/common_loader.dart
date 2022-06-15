@@ -7,7 +7,7 @@ class CommonLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: CircularProgressIndicator(
-        color: Colors.yellow,
+        color: Color(0xff08B5E0),
       ),
     );
   }

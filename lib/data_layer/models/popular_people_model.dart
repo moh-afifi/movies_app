@@ -79,12 +79,12 @@ class KnownFor {
   String? backdropPath;
   List<int>? genreIds;
   int? id;
-  MediaType? mediaType;
+  String? mediaType;
   String? originalLanguage;
   String? originalTitle;
   String? overview;
   String? posterPath;
-  DateTime? releaseDate;
+  String? releaseDate;
   String? title;
   bool? video;
   double? voteAverage;
@@ -99,12 +99,12 @@ class KnownFor {
     backdropPath: json["backdrop_path"],
     genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
     id: json["id"],
-    mediaType: mediaTypeValues.map[json["media_type"]],
+    mediaType: json["media_type"],
     originalLanguage: json["original_language"],
     originalTitle: json["original_title"],
     overview: json["overview"],
     posterPath: json["poster_path"],
-    releaseDate: json["release_date"] == null ? null : DateTime.parse(json["release_date"]),
+    releaseDate: json["release_date"],
     title: json["title"],
     video: json["video"],
     voteAverage: json["vote_average"].toDouble(),
