@@ -1,37 +1,37 @@
 class PopularPeopleModel {
+  PopularPeopleModel({
+    this.page,
+    this.results,
+    this.totalPages,
+    this.totalResults,
+  });
+
   int? page;
-  List<Results>? results;
+  List<Result>? results;
   int? totalPages;
   int? totalResults;
 
-  PopularPeopleModel(
-      {this.page, this.results, this.totalPages, this.totalResults});
+  factory PopularPeopleModel.fromJson(Map<String, dynamic> json) => PopularPeopleModel(
+    page: json["page"],
+    results: List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+    totalPages: json["total_pages"],
+    totalResults: json["total_results"],
+  );
 
-  PopularPeopleModel.fromJson(Map<String, dynamic> json) {
-    page = json['page'];
-    if (json['results'] != null) {
-      results = <Results>[];
-      json['results'].forEach((v) {
-        results!.add( Results.fromJson(v));
-      });
-    }
-    totalPages = json['total_pages'];
-    totalResults = json['total_results'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['page'] = this.page;
-    if (this.results != null) {
-      data['results'] = this.results!.map((v) => v.toJson()).toList();
-    }
-    data['total_pages'] = this.totalPages;
-    data['total_results'] = this.totalResults;
-    return data;
-  }
 }
 
-class Results {
+class Result {
+  Result({
+    this.adult,
+    this.gender,
+    this.id,
+    this.knownFor,
+    this.knownForDepartment,
+    this.name,
+    this.popularity,
+    this.profilePath,
+  });
+
   bool? adult;
   int? gender;
   int? id;
@@ -41,129 +41,107 @@ class Results {
   double? popularity;
   String? profilePath;
 
-  Results(
-      {this.adult,
-        this.gender,
-        this.id,
-        this.knownFor,
-        this.knownForDepartment,
-        this.name,
-        this.popularity,
-        this.profilePath});
-
-  Results.fromJson(Map<String, dynamic> json) {
-    adult = json['adult'];
-    gender = json['gender'];
-    id = json['id'];
-    if (json['known_for'] != null) {
-      knownFor = <KnownFor>[];
-      json['known_for'].forEach((v) {
-        knownFor!.add(new KnownFor.fromJson(v));
-      });
-    }
-    knownForDepartment = json['known_for_department'];
-    name = json['name'];
-    popularity = json['popularity'];
-    profilePath = json['profile_path'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['adult'] = this.adult;
-    data['gender'] = this.gender;
-    data['id'] = this.id;
-    if (this.knownFor != null) {
-      data['known_for'] = this.knownFor!.map((v) => v.toJson()).toList();
-    }
-    data['known_for_department'] = this.knownForDepartment;
-    data['name'] = this.name;
-    data['popularity'] = this.popularity;
-    data['profile_path'] = this.profilePath;
-    return data;
-  }
+  factory Result.fromJson(Map<String, dynamic> json) => Result(
+    adult: json["adult"],
+    gender: json["gender"],
+    id: json["id"],
+    knownFor: List<KnownFor>.from(json["known_for"].map((x) => KnownFor.fromJson(x))),
+    knownForDepartment:json["known_for_department"],
+    name: json["name"],
+    popularity: json["popularity"].toDouble(),
+    profilePath: json["profile_path"],
+  );
 }
 
 class KnownFor {
+  KnownFor({
+    this.adult,
+    this.backdropPath,
+    this.genreIds,
+    this.id,
+    this.mediaType,
+    this.originalLanguage,
+    this.originalTitle,
+    this.overview,
+    this.posterPath,
+    this.releaseDate,
+    this.title,
+    this.video,
+    this.voteAverage,
+    this.voteCount,
+    this.firstAirDate,
+    this.name,
+    this.originCountry,
+    this.originalName,
+  });
+
   bool? adult;
   String? backdropPath;
   List<int>? genreIds;
   int? id;
-  String? mediaType;
+  MediaType? mediaType;
   String? originalLanguage;
   String? originalTitle;
   String? overview;
   String? posterPath;
-  String? releaseDate;
+  DateTime? releaseDate;
   String? title;
   bool? video;
   double? voteAverage;
   int? voteCount;
-  String? firstAirDate;
+  DateTime? firstAirDate;
   String? name;
-  List<String>? originCountry;
+  List<OriginCountry>? originCountry;
   String? originalName;
 
-  KnownFor(
-      {this.adult,
-        this.backdropPath,
-        this.genreIds,
-        this.id,
-        this.mediaType,
-        this.originalLanguage,
-        this.originalTitle,
-        this.overview,
-        this.posterPath,
-        this.releaseDate,
-        this.title,
-        this.video,
-        this.voteAverage,
-        this.voteCount,
-        this.firstAirDate,
-        this.name,
-        this.originCountry,
-        this.originalName});
+  factory KnownFor.fromJson(Map<String, dynamic> json) => KnownFor(
+    adult: json["adult"],
+    backdropPath: json["backdrop_path"],
+    genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
+    id: json["id"],
+    mediaType: mediaTypeValues.map[json["media_type"]],
+    originalLanguage: json["original_language"],
+    originalTitle: json["original_title"],
+    overview: json["overview"],
+    posterPath: json["poster_path"],
+    releaseDate: json["release_date"] == null ? null : DateTime.parse(json["release_date"]),
+    title: json["title"],
+    video: json["video"],
+    voteAverage: json["vote_average"].toDouble(),
+    voteCount: json["vote_count"],
+    firstAirDate: json["first_air_date"] == null ? null : DateTime.parse(json["first_air_date"]),
+    name: json["name"],
+    originCountry: json["origin_country"] == null ? null : List<OriginCountry>.from(json["origin_country"].map((x) => originCountryValues.map[x])),
+    originalName: json["original_name"],
+  );
+}
 
-  KnownFor.fromJson(Map<String, dynamic> json) {
-    adult = json['adult'];
-    backdropPath = json['backdrop_path'];
-    genreIds = json['genre_ids'].cast<int>();
-    id = json['id'];
-    mediaType = json['media_type'];
-    originalLanguage = json['original_language'];
-    originalTitle = json['original_title'];
-    overview = json['overview'];
-    posterPath = json['poster_path'];
-    releaseDate = json['release_date'];
-    title = json['title'];
-    video = json['video'];
-    voteAverage = json['vote_average'];
-    voteCount = json['vote_count'];
-    firstAirDate = json['first_air_date'];
-    name = json['name'];
-    originCountry = json['origin_country'].cast<String>();
-    originalName = json['original_name'];
-  }
+enum MediaType { MOVIE, TV }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['adult'] = this.adult;
-    data['backdrop_path'] = this.backdropPath;
-    data['genre_ids'] = this.genreIds;
-    data['id'] = this.id;
-    data['media_type'] = this.mediaType;
-    data['original_language'] = this.originalLanguage;
-    data['original_title'] = this.originalTitle;
-    data['overview'] = this.overview;
-    data['poster_path'] = this.posterPath;
-    data['release_date'] = this.releaseDate;
-    data['title'] = this.title;
-    data['video'] = this.video;
-    data['vote_average'] = this.voteAverage;
-    data['vote_count'] = this.voteCount;
-    data['first_air_date'] = this.firstAirDate;
-    data['name'] = this.name;
-    data['origin_country'] = this.originCountry;
-    data['original_name'] = this.originalName;
-    return data;
+final mediaTypeValues = EnumValues({
+  "movie": MediaType.MOVIE,
+  "tv": MediaType.TV
+});
+
+enum OriginCountry { TH, TR, US }
+
+final originCountryValues = EnumValues({
+  "TH": OriginCountry.TH,
+  "TR": OriginCountry.TR,
+  "US": OriginCountry.US
+});
+
+
+class EnumValues<T> {
+  Map<String, T> map;
+  Map<T, String>? reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    if (reverseMap == null) {
+      reverseMap = map.map((k, v) => new MapEntry(v, k));
+    }
+    return reverseMap!;
   }
 }

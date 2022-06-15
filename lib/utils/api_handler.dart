@@ -18,37 +18,34 @@ class ApiHandler {
   static const _apiKey = '0656e42add14c54ec59c8109e5d6e50b';
   static const _lang = 'en-US';
 
-  late Dio _dio;
+  Dio _dio = Dio();
 
   Future<dynamic> call({
     required String path,
     required APIMethod method,
     int page = 1,
     Map<String, dynamic>? body,
-    Map<String, dynamic>? header,
   }) async {
     try {
       final url = '$_baseUrl$path?api_key=$_apiKey&language=$_lang&page=$page';
+      print('$url *********//////////////////*****************************');
       Response response;
       switch (method) {
         case APIMethod.post:
           response = await _dio.post(
             url,
             data: body,
-            options: Options(headers: header),
           );
           break;
         case APIMethod.put:
           response = await _dio.put(
             url,
             data: body,
-            options: Options(headers: header),
           );
           break;
         case APIMethod.get:
           response = await _dio.get(
             url,
-            options: Options(headers: header),
           );
           break;
         case APIMethod.delete:
@@ -56,14 +53,12 @@ class ApiHandler {
           response = await _dio.delete(
             url,
             data: body,
-            options: Options(headers: header),
           );
           break;
         case APIMethod.patch:
           response = await _dio.patch(
             url,
             data: body,
-            options: Options(headers: header),
           );
           break;
       }
