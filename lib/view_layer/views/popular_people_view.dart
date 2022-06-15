@@ -73,20 +73,23 @@ class _PopularPeopleViewState extends State<PopularPeopleView> {
                   } else {
                     return Consumer<PopularPeopleProvider>(
                       builder: (context, popularPeopleProvider, child) {
-                        return Expanded(
-                          child: ListView.builder(
-                            controller: scrollOrderController,
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            itemCount: popularPeopleProvider
-                                .popularPeopleModel.results?.length,
-                            itemBuilder: (context, index) {
-                              return PopularPeopleCard(
-                                model: popularPeopleProvider
-                                    .popularPeopleModel.results?[index],
+                        return popularPeopleProvider.popularPeopleModel.results!.isEmpty
+                            ? const EmptyDataMessage()
+                            : Expanded(
+                                child: ListView.builder(
+                                  controller: scrollOrderController,
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  itemCount: popularPeopleProvider
+                                      .popularPeopleModel.results?.length,
+                                  itemBuilder: (context, index) {
+                                    return PopularPeopleCard(
+                                      model: popularPeopleProvider
+                                          .popularPeopleModel.results?[index],
+                                    );
+                                  },
+                                ),
                               );
-                            },
-                          ),
-                        );
                       },
                     );
                   }
@@ -99,6 +102,3 @@ class _PopularPeopleViewState extends State<PopularPeopleView> {
     );
   }
 }
-// popularPeopleProvider.popularPeopleModel.results?.isEmpty
-// ? const EmptyDataMessage()
-// :

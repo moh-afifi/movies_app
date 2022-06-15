@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/foundation.dart';
 
 enum APIMethod { post, put, get, delete, patch }
@@ -20,6 +21,7 @@ class ApiHandler {
 
   final Dio _dio = Dio();
 
+
   Future<dynamic> call({
     required String path,
     required APIMethod method,
@@ -28,12 +30,19 @@ class ApiHandler {
   }) async {
     try {
       final url = '$_baseUrl$path?api_key=$_apiKey&language=$_lang&page=$page';
+      //to cache api response:
+      DioCacheManager? dioCacheManager;
+      dioCacheManager = DioCacheManager(CacheConfig());
+      Options cacheOptions = buildCacheOptions(const Duration(days: 7));
+      _dio.interceptors.add(dioCacheManager.interceptor);
+      //-----------------------------------------------------------------
       Response response;
       switch (method) {
         case APIMethod.post:
           response = await _dio.post(
             url,
             data: body,
+            options: cacheOptions,
           );
           break;
         case APIMethod.put:
@@ -44,7 +53,8 @@ class ApiHandler {
           break;
         case APIMethod.get:
           response = await _dio.get(
-            url,
+              url,
+            options: cacheOptions,
           );
           break;
         case APIMethod.delete:

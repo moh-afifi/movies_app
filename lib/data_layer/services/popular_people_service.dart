@@ -1,3 +1,6 @@
+import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
+
 import '../../utils/api_handler.dart';
 import '../models/popular_people_model.dart';
 
@@ -20,5 +23,4 @@ class PopularPeopleService {
       return PopularPeopleModel();
     }
   }
-
 }
