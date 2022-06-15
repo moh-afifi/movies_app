@@ -12,6 +12,7 @@ class PopularPeopleService {
         path: 'person/popular',
         page: 1,
       );
+
       popularPeopleModel = PopularPeopleModel.fromJson(response);
       return popularPeopleModel;
     } catch (e) {
