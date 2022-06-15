@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:squadio_task/controller_layer/popular_people_provider.dart';
 import 'package:squadio_task/view_layer/helpers/popular_people_card.dart';
 import '../../global_helpers/common_error_message.dart';
@@ -69,26 +68,28 @@ class _PopularPeopleViewState extends State<PopularPeopleView> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CommonLoader();
                 } else {
-                  return Consumer<PopularPeopleProvider>(
-                    builder: (context, popularPeopleProvider, child) {
-                      return Expanded(
-                        child: ListView.builder(
-                          controller: scrollOrderController,
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          itemCount: popularPeopleProvider.popularPeopleModel.results?.length,
-                          itemBuilder: (context, index) {
-                            return PopularPeopleCard(
-                              model: popularPeopleProvider.popularPeopleModel.results?[index],
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  );
                   if (snapshot.hasError) {
-                    // return  Text(snapshot.error.toString());
                     return const CommonErrorMessage();
-                  } else {}
+                  } else {
+                    return Consumer<PopularPeopleProvider>(
+                      builder: (context, popularPeopleProvider, child) {
+                        return Expanded(
+                          child: ListView.builder(
+                            controller: scrollOrderController,
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            itemCount: popularPeopleProvider
+                                .popularPeopleModel.results?.length,
+                            itemBuilder: (context, index) {
+                              return PopularPeopleCard(
+                                model: popularPeopleProvider
+                                    .popularPeopleModel.results?[index],
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  }
                 }
               },
             ),
