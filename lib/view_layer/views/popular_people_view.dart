@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:squadio_task/controller_layer/popular_people_provider.dart';
 import 'package:squadio_task/view_layer/helpers/popular_people_card.dart';
 import '../../global_helpers/common_error_message.dart';
@@ -27,9 +26,11 @@ class _PopularPeopleViewState extends State<PopularPeopleView> {
     future = prepareData();
     _controller = ScrollController()
       ..addListener(() async {
-        var popularPeopleProvider = Provider.of<PopularPeopleProvider>(context, listen: false);
+        var popularPeopleProvider =
+            Provider.of<PopularPeopleProvider>(context, listen: false);
         int page = popularPeopleProvider.page;
-        if (_controller.position.pixels == _controller.position.maxScrollExtent) {
+        if (_controller.position.pixels ==
+            _controller.position.maxScrollExtent) {
           if (page < popularPeopleProvider.popularPeopleModel.totalPages) {
             await popularPeopleProvider.getPaginationPopularPeople();
           }
@@ -83,12 +84,16 @@ class _PopularPeopleViewState extends State<PopularPeopleView> {
                                     ListView.builder(
                                       key: const Key('infinite_scroll_list'),
                                       controller: _controller,
-                                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                                      itemCount: popularPeopleProvider.popularPeopleModel.results.length,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
+                                      itemCount: popularPeopleProvider
+                                          .popularPeopleModel.results.length,
                                       itemBuilder: (context, index) {
                                         return PopularPeopleCard(
                                           key: Key('card_$index'),
-                                          model: popularPeopleProvider.popularPeopleModel.results[index],
+                                          model: popularPeopleProvider
+                                              .popularPeopleModel
+                                              .results[index],
                                         );
                                       },
                                     ),
@@ -98,7 +103,8 @@ class _PopularPeopleViewState extends State<PopularPeopleView> {
                                           ? const SizedBox(
                                               height: 50,
                                               width: 50,
-                                              child: CommonLoader())
+                                              child: CommonLoader(),
+                                            )
                                           : const SizedBox(),
                                     )
                                   ],

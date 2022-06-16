@@ -33,7 +33,7 @@ class SaveImageProvider extends ChangeNotifier {
           name: imageName,
         );
         changeSpinner(false);
-        showSnackBar(
+       showSnackBar(
           context,
           backgroundColor: Colors.teal,
           textColor: Colors.white,

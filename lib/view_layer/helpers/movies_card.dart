@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:squadio_task/data_layer/models/popular_people_model.dart';
@@ -20,7 +21,7 @@ class MoviesCard extends StatelessWidget {
             builder: (context) => ChangeNotifierProvider(
               create: (context) => SaveImageProvider(),
               child: FullImageView(
-                imageUrl: model.posterPath,
+                imageUrl: model.posterPath??'',
                 imageName: model.title ?? 'image',
               ),
             ),
@@ -28,6 +29,7 @@ class MoviesCard extends StatelessWidget {
         );
       },
       child: Card(
+        color: Colors.black,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -35,22 +37,18 @@ class MoviesCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             NetImage(
-              model.posterPath,
-              height: 250,
+              model.posterPath??'',
+              height: 200,
               width: double.infinity,
-            ),
-            const SizedBox(
-              height: 10,
             ),
             Text(
               model.title ?? '',
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
+                  color: Colors.white
               ),
-            ),
-            const SizedBox(
-              height: 10,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -60,14 +58,16 @@ class MoviesCard extends StatelessWidget {
                     model.mediaType ?? '',
                     style: const TextStyle(
                       fontSize: 12,
+                        color: Colors.white
                     ),
                   ),
                   const Spacer(),
                   Text(
-                    model.voteAverage.toString(),
+                    model.voteAverage.toString()??'',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
+                      color: Colors.white
                     ),
                   ),
                   const Icon(
@@ -78,7 +78,7 @@ class MoviesCard extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 2,
             ),
           ],
         ),

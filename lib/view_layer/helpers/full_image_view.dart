@@ -1,6 +1,4 @@
-import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +17,6 @@ class FullImageView extends StatelessWidget {
       body: SafeArea(child: Consumer<SaveImageProvider>(
         builder: (context, saveImageProvider, child) {
           return ModalProgressHUD(
-
             inAsyncCall: saveImageProvider.spinner,
             progressIndicator: const CommonLoader(),
             child: Stack(

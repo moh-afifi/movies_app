@@ -1,7 +1,5 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:squadio_task/data_layer/models/popular_people_model.dart';
 import 'package:squadio_task/data_layer/services/popular_people_service.dart';
 
@@ -19,20 +17,23 @@ class PopularPeopleProvider extends ChangeNotifier {
   }
 
   int page = 1;
-  incrementPage(){
+
+  incrementPage() {
     page++;
     notifyListeners();
   }
+
   //----------------------------------------------------------------------------
   PopularPeopleModel tempPopularPeopleModel = PopularPeopleModel();
+
   Future<void> getPaginationPopularPeople() async {
     try {
-      changePaginationLoading(true);
+      changePaginationLoading(true); //show loader
       notifyListeners();
       incrementPage();
       tempPopularPeopleModel = await _popularPeopleService.getPopularPeople(page: page);
-      _popularPeopleModel.results.addAll(tempPopularPeopleModel.results);
-      changePaginationLoading(false);
+      _popularPeopleModel.results.addAll(tempPopularPeopleModel.results); //add new items to list when scroll
+      changePaginationLoading(false); //hide loader
       notifyListeners();
     } catch (e) {
       log(e.toString());

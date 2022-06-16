@@ -18,26 +18,25 @@ class PopularPeopleCard extends StatelessWidget {
           ),
         );
       },
-      child: Card(
-        elevation: 10,
-        shadowColor: Colors.black,
-        shape: RoundedRectangleBorder(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
           borderRadius: BorderRadius.circular(15.0),
         ),
-        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
         child: Column(
           children: [
             NetImage(
               model.profilePath??'',
-              height: 200,
+              height: 250,
               width: double.infinity,
               fit: BoxFit.fill,
             ),
-            Padding(
+            Container(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Text(
-                model.name,
-                style: const TextStyle(color: Colors.black, fontSize: 20),
+                model.name??'',
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
           ],

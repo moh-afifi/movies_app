@@ -51,22 +51,6 @@ void main() {
       ),
     );
   });
-
-  testWidgets('test if list cards are rendered', (tester) async {
-    await tester.pumpWidget(
-      Builder(
-        builder: (BuildContext context) {
-          tester.runAsync(() async {
-            await context.read<PopularPeopleProvider>().getPopularPeople();
-            const testKey = Key('card_10');
-            await tester.pumpWidget(const MyApp());
-            expect(find.byKey(testKey), findsOneWidget);
-          });
-          return const SizedBox();
-        },
-      ),
-    );
-  });
   testWidgets('test if gridView is rendered', (tester) async {
     await tester.pumpWidget(
       Builder(
@@ -83,7 +67,7 @@ void main() {
     );
   });
 
-  testWidgets('test if list cards are rendered', (tester) async {
+  testWidgets('test if gridView cards are rendered', (tester) async {
     await tester.pumpWidget(
       Builder(
         builder: (BuildContext context) {
@@ -98,7 +82,7 @@ void main() {
       ),
     );
   });
-  testWidgets('test if list cards are rendered', (tester) async {
+  testWidgets('test if full size image is rendered', (tester) async {
     await tester.pumpWidget(
       Builder(
         builder: (BuildContext context) {
