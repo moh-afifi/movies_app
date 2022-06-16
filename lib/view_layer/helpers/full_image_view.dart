@@ -9,9 +9,9 @@ import 'package:squadio_task/global_helpers/common_loader.dart';
 import 'package:squadio_task/utils/api_handler.dart';
 
 class FullImageView extends StatelessWidget {
-  const FullImageView({Key? key, this.imageUrl, this.imageName})
+  const FullImageView({Key key, this.imageUrl, this.imageName})
       : super(key: key);
-  final String? imageUrl, imageName;
+  final String imageUrl, imageName;
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +19,13 @@ class FullImageView extends StatelessWidget {
       body: SafeArea(child: Consumer<SaveImageProvider>(
         builder: (context, saveImageProvider, child) {
           return ModalProgressHUD(
+
             inAsyncCall: saveImageProvider.spinner,
             progressIndicator: const CommonLoader(),
             child: Stack(
               children: [
                 Container(
+                  key: const Key('full_size_image'),
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,

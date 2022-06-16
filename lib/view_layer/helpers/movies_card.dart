@@ -7,8 +7,8 @@ import 'package:squadio_task/view_layer/helpers/full_image_view.dart';
 import '../../controller_layer/save_image_provider.dart';
 
 class MoviesCard extends StatelessWidget {
-  const MoviesCard({Key? key, this.model}) : super(key: key);
-  final KnownFor? model;
+  const MoviesCard({Key key, this.model}) : super(key: key);
+  final KnownFor model;
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,8 @@ class MoviesCard extends StatelessWidget {
             builder: (context) => ChangeNotifierProvider(
               create: (context) => SaveImageProvider(),
               child: FullImageView(
-                imageUrl: model!.posterPath!,
-                imageName: model!.title ?? 'image',
+                imageUrl: model.posterPath,
+                imageName: model.title ?? 'image',
               ),
             ),
           ),
@@ -35,7 +35,7 @@ class MoviesCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             NetImage(
-              model!.posterPath!,
+              model.posterPath,
               height: 250,
               width: double.infinity,
             ),
@@ -43,7 +43,7 @@ class MoviesCard extends StatelessWidget {
               height: 10,
             ),
             Text(
-              model!.title ?? '',
+              model.title ?? '',
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
@@ -57,14 +57,14 @@ class MoviesCard extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    model!.mediaType ?? '',
+                    model.mediaType ?? '',
                     style: const TextStyle(
                       fontSize: 12,
                     ),
                   ),
                   const Spacer(),
                   Text(
-                    model!.voteAverage.toString(),
+                    model.voteAverage.toString(),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

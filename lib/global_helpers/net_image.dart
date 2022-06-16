@@ -6,14 +6,14 @@ import 'package:squadio_task/utils/api_handler.dart';
 class NetImage extends CachedNetworkImage {
   NetImage(
     String src, {
-    Key? key,
-    String? url,
-    double? height,
-    double? width,
-    BoxFit? fit,
-    Color? color,
-    String? errorImage,
-    BoxFit? errorImageFit,
+    Key key,
+    String url,
+    double height,
+    double width,
+    BoxFit fit,
+    Color color,
+    String errorImage,
+    BoxFit errorImageFit,
     bool errorWidgetIsLoadingWidget = false,
     bool showErrorWidget = true,
   }) : super(

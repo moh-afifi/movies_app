@@ -1,30 +1,116 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:squadio_task/controller_layer/popular_people_provider.dart';
 import 'package:squadio_task/main.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('test if list view is rendered', (tester) async {
+    await tester.pumpWidget(
+      Builder(
+        builder: (BuildContext context) {
+          tester.runAsync(() async {
+            await context.read<PopularPeopleProvider>().getPopularPeople();
+            const testKey = Key('infinite_scroll_list');
+            await tester.pumpWidget(const MyApp());
+            expect(find.byKey(testKey), findsOneWidget);
+          });
+          return const SizedBox();
+        },
+      ),
+    );
+  });
+  testWidgets('test infinite scroll', (tester) async {
+    await tester.pumpWidget(
+      Builder(
+        builder: (BuildContext context) {
+          tester.runAsync(() async {
+            await context.read<PopularPeopleProvider>().getPopularPeople();
+            const testKey = Key('infinite_scroll_list');
+            await tester.drag(find.byKey(testKey), const Offset(0.0, -300));
+            await tester.pumpWidget(const MyApp());
+            expect(find.byKey(testKey), findsOneWidget);
+          });
+          return const SizedBox();
+        },
+      ),
+    );
+  });
+  testWidgets('test if list cards are rendered', (tester) async {
+    await tester.pumpWidget(
+      Builder(
+        builder: (BuildContext context) {
+          tester.runAsync(() async {
+            await context.read<PopularPeopleProvider>().getPopularPeople();
+            const testKey = Key('card_10');
+            await tester.pumpWidget(const MyApp());
+            expect(find.byKey(testKey), findsOneWidget);
+          });
+          return const SizedBox();
+        },
+      ),
+    );
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  testWidgets('test if list cards are rendered', (tester) async {
+    await tester.pumpWidget(
+      Builder(
+        builder: (BuildContext context) {
+          tester.runAsync(() async {
+            await context.read<PopularPeopleProvider>().getPopularPeople();
+            const testKey = Key('card_10');
+            await tester.pumpWidget(const MyApp());
+            expect(find.byKey(testKey), findsOneWidget);
+          });
+          return const SizedBox();
+        },
+      ),
+    );
+  });
+  testWidgets('test if gridView is rendered', (tester) async {
+    await tester.pumpWidget(
+      Builder(
+        builder: (BuildContext context) {
+          tester.runAsync(() async {
+            await context.read<PopularPeopleProvider>().getPopularPeople();
+            const testKey = Key('grid_view');
+            await tester.pumpWidget(const MyApp());
+            expect(find.byKey(testKey), findsOneWidget);
+          });
+          return const SizedBox();
+        },
+      ),
+    );
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('test if list cards are rendered', (tester) async {
+    await tester.pumpWidget(
+      Builder(
+        builder: (BuildContext context) {
+          tester.runAsync(() async {
+            await context.read<PopularPeopleProvider>().getPopularPeople();
+            const testKey = Key('grid_view_card');
+            await tester.pumpWidget(const MyApp());
+            expect(find.byKey(testKey), findsOneWidget);
+          });
+          return const SizedBox();
+        },
+      ),
+    );
+  });
+  testWidgets('test if list cards are rendered', (tester) async {
+    await tester.pumpWidget(
+      Builder(
+        builder: (BuildContext context) {
+          tester.runAsync(() async {
+            await context.read<PopularPeopleProvider>().getPopularPeople();
+            const testKey = Key('full_size_image');
+            await tester.pumpWidget(const MyApp());
+            expect(find.byKey(testKey), findsOneWidget);
+          });
+          return const SizedBox();
+        },
+      ),
+    );
   });
 }

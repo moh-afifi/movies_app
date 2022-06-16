@@ -5,8 +5,8 @@ import 'package:squadio_task/view_layer/helpers/movies_card.dart';
 import '../../data_layer/models/popular_people_model.dart';
 
 class PersonDetailsView extends StatelessWidget {
-  const PersonDetailsView({Key? key, this.model}) : super(key: key);
-  final Results? model;
+  const PersonDetailsView({Key key, this.model}) : super(key: key);
+  final Results model;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class PersonDetailsView extends StatelessWidget {
                   child: Row(
                     children: [
                       NetImage(
-                        model!.profilePath!,
+                        model.profilePath,
                         height: 100,
                         width: 70,
                       ),
@@ -60,16 +60,18 @@ class PersonDetailsView extends StatelessWidget {
               ),
               Expanded(
                 child: GridView.builder(
+                  key: const Key('grid_view'),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 0.48,
                       crossAxisSpacing: 15,
                       mainAxisSpacing: 15),
                   padding: const EdgeInsets.symmetric(horizontal: 5),
-                  itemCount: model!.knownFor!.length,
+                  itemCount: model.knownFor.length,
                   itemBuilder: (BuildContext context, int index) {
                     return MoviesCard(
-                      model: model?.knownFor?[index],
+                      key: const Key('grid_view_card'),
+                      model: model?.knownFor[index],
                     );
                   },
                 ),

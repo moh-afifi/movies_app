@@ -4,8 +4,8 @@ import 'package:squadio_task/global_helpers/net_image.dart';
 import 'package:squadio_task/view_layer/views/person_details_view.dart';
 
 class PopularPeopleCard extends StatelessWidget {
-  const PopularPeopleCard({Key? key, this.model}) : super(key: key);
-  final Results? model;
+  const PopularPeopleCard({Key key, this.model}) : super(key: key);
+  final Results model;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +27,16 @@ class PopularPeopleCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
         child: Column(
           children: [
-            NetImage(model!.profilePath!,
-                height: 200, width: double.infinity, fit: BoxFit.fill),
+            NetImage(
+              model.profilePath??'',
+              height: 200,
+              width: double.infinity,
+              fit: BoxFit.fill,
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Text(
-                model!.name!,
+                model.name,
                 style: const TextStyle(color: Colors.black, fontSize: 20),
               ),
             ),

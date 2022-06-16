@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class EmptyDataMessage extends StatelessWidget {
-  const EmptyDataMessage({Key? key}) : super(key: key);
+  const EmptyDataMessage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

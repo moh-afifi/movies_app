@@ -6,10 +6,10 @@ class PopularPeopleModel {
     this.totalResults,
   });
 
-  int? page;
-  List<Results>? results=[];
-  int? totalPages;
-  int? totalResults;
+  int page;
+  List<Results> results=[];
+  int totalPages;
+  int totalResults;
 
   factory PopularPeopleModel.fromJson(Map<String, dynamic> json) => PopularPeopleModel(
     page: json["page"],
@@ -32,14 +32,14 @@ class Results {
     this.profilePath,
   });
 
-  bool? adult;
-  int? gender;
-  int? id;
-  List<KnownFor>? knownFor;
-  String? knownForDepartment;
-  String? name;
-  double? popularity;
-  String? profilePath;
+  bool adult;
+  int gender;
+  int id;
+  List<KnownFor> knownFor;
+  String knownForDepartment;
+  String name;
+  double popularity;
+  String profilePath;
 
   factory Results.fromJson(Map<String, dynamic> json) => Results(
     adult: json["adult"],
@@ -75,24 +75,24 @@ class KnownFor {
     this.originalName,
   });
 
-  bool? adult;
-  String? backdropPath;
-  List<int>? genreIds;
-  int? id;
-  String? mediaType;
-  String? originalLanguage;
-  String? originalTitle;
-  String? overview;
-  String? posterPath;
-  String? releaseDate;
-  String? title;
-  bool? video;
-  double? voteAverage;
-  int? voteCount;
-  DateTime? firstAirDate;
-  String? name;
-  List<OriginCountry>? originCountry;
-  String? originalName;
+  bool adult;
+  String backdropPath;
+  List<int> genreIds;
+  int id;
+  String mediaType;
+  String originalLanguage;
+  String originalTitle;
+  String overview;
+  String posterPath;
+  String releaseDate;
+  String title;
+  bool video;
+  double voteAverage;
+  int voteCount;
+  DateTime firstAirDate;
+  String name;
+  List<OriginCountry> originCountry;
+  String originalName;
 
   factory KnownFor.fromJson(Map<String, dynamic> json) => KnownFor(
     adult: json["adult"],
@@ -134,7 +134,7 @@ final originCountryValues = EnumValues({
 
 class EnumValues<T> {
   Map<String, T> map;
-  Map<T, String>? reverseMap;
+  Map<T, String> reverseMap;
 
   EnumValues(this.map);
 
@@ -142,6 +142,6 @@ class EnumValues<T> {
     if (reverseMap == null) {
       reverseMap = map.map((k, v) => new MapEntry(v, k));
     }
-    return reverseMap!;
+    return reverseMap;
   }
 }

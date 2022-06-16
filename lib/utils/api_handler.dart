@@ -23,15 +23,15 @@ class ApiHandler {
 
 
   Future<dynamic> call({
-    required String path,
-    required APIMethod method,
+     String path,
+     APIMethod method,
     int page = 1,
-    Map<String, dynamic>? body,
+    Map<String, dynamic> body,
   }) async {
     try {
       final url = '$_baseUrl$path?api_key=$_apiKey&language=$_lang&page=$page';
       //to cache api response:
-      DioCacheManager? dioCacheManager;
+      DioCacheManager dioCacheManager;
       dioCacheManager = DioCacheManager(CacheConfig());
       Options cacheOptions = buildCacheOptions(const Duration(days: 7));
       _dio.interceptors.add(dioCacheManager.interceptor);

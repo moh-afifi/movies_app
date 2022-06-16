@@ -12,26 +12,26 @@ class PopularPeopleProvider extends ChangeNotifier {
   PopularPeopleModel _popularPeopleModel = PopularPeopleModel();
 
   PopularPeopleModel get popularPeopleModel => _popularPeopleModel;
-  List<Results>? list = [];
 
   Future<void> getPopularPeople() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('page', 1);
     _popularPeopleModel = await _popularPeopleService.getPopularPeople(page: 1);
-    list = _popularPeopleModel.results!;
     notifyListeners();
   }
 
-  int page = 0;
-
+  int page = 1;
+  incrementPage(){
+    page++;
+    notifyListeners();
+  }
   //----------------------------------------------------------------------------
-
-  Future<void> getPaginationPopularPeople(int page) async {
+  PopularPeopleModel tempPopularPeopleModel = PopularPeopleModel();
+  Future<void> getPaginationPopularPeople() async {
     try {
       changePaginationLoading(true);
       notifyListeners();
-      _popularPeopleModel = await _popularPeopleService.getPopularPeople(page: page + 1);
-      list = list! + _popularPeopleModel.results!;
+      incrementPage();
+      tempPopularPeopleModel = await _popularPeopleService.getPopularPeople(page: page);
+      _popularPeopleModel.results.addAll(tempPopularPeopleModel.results);
       changePaginationLoading(false);
       notifyListeners();
     } catch (e) {

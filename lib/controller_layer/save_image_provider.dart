@@ -14,8 +14,8 @@ class SaveImageProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveImage({BuildContext? context, String? imageUrl, String? imageName}) async {
-    if (await CheckInternet.checkInternet(context!)) {
+  Future<void> saveImage({BuildContext context, String imageUrl, String imageName}) async {
+    if (await CheckInternet.checkInternet(context)) {
       var permission = await Permission.storage.status;
       await [
         Permission.storage,
@@ -24,7 +24,7 @@ class SaveImageProvider extends ChangeNotifier {
       if (permission.isGranted) {
         changeSpinner(true);
         var response = await Dio().get(
-          imageUrl!,
+          imageUrl,
           options: Options(responseType: ResponseType.bytes),
         );
         await ImageGallerySaver.saveImage(
@@ -35,17 +35,19 @@ class SaveImageProvider extends ChangeNotifier {
         changeSpinner(false);
         showSnackBar(
           context,
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.teal,
           textColor: Colors.white,
           text: 'Photo Saved Successfully',
         );
       }
+    }else{
+      showSnackBar(
+        context,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        text: 'No Internet Connection',
+      );
     }
-    showSnackBar(
-      context,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      text: 'No Internet Connection',
-    );
+
   }
 }

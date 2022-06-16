@@ -8,15 +8,15 @@ import '../../global_helpers/common_loader.dart';
 import '../../global_helpers/empty_data_message.dart';
 
 class PopularPeopleView extends StatefulWidget {
-  const PopularPeopleView({Key? key}) : super(key: key);
+  const PopularPeopleView({Key key}) : super(key: key);
 
   @override
   State<PopularPeopleView> createState() => _PopularPeopleViewState();
 }
 
 class _PopularPeopleViewState extends State<PopularPeopleView> {
-  Future? future;
-  late ScrollController _controller;
+  Future future;
+  ScrollController _controller;
 
   Future<void> prepareData() async {
     await context.read<PopularPeopleProvider>().getPopularPeople();
@@ -27,15 +27,11 @@ class _PopularPeopleViewState extends State<PopularPeopleView> {
     future = prepareData();
     _controller = ScrollController()
       ..addListener(() async {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        int page = prefs.getInt('page')!;
-        if (_controller.position.pixels ==
-            _controller.position.maxScrollExtent) {
-          if (page < 500) {
-            prefs.setInt('page', page + 1);
-            await context
-                .read<PopularPeopleProvider>()
-                .getPaginationPopularPeople(page + 1);
+        var popularPeopleProvider = Provider.of<PopularPeopleProvider>(context, listen: false);
+        int page = popularPeopleProvider.page;
+        if (_controller.position.pixels == _controller.position.maxScrollExtent) {
+          if (page < popularPeopleProvider.popularPeopleModel.totalPages) {
+            await popularPeopleProvider.getPaginationPopularPeople();
           }
         }
       });
@@ -69,39 +65,42 @@ class _PopularPeopleViewState extends State<PopularPeopleView> {
               future: future,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Expanded(child: CommonLoader());
+                  return const Expanded(
+                    child: CommonLoader(),
+                  );
                 } else {
                   if (snapshot.hasError) {
                     return const CommonErrorMessage();
                   } else {
                     return Consumer<PopularPeopleProvider>(
                       builder: (context, popularPeopleProvider, child) {
-                        return popularPeopleProvider.popularPeopleModel.results!.isEmpty
+                        return popularPeopleProvider
+                                .popularPeopleModel.results.isEmpty
                             ? const EmptyDataMessage()
                             : Expanded(
-                                child: Column(
+                                child: Stack(
                                   children: [
-                                    Expanded(
-                                      child: ListView.builder(
-                                        controller: _controller,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 5),
-                                        itemCount:
-                                            popularPeopleProvider.list!.length,
-                                        itemBuilder: (context, index) {
-                                          return PopularPeopleCard(
-                                            model: popularPeopleProvider
-                                                .list![index],
-                                          );
-                                        },
-                                      ),
+                                    ListView.builder(
+                                      key: const Key('infinite_scroll_list'),
+                                      controller: _controller,
+                                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                                      itemCount: popularPeopleProvider.popularPeopleModel.results.length,
+                                      itemBuilder: (context, index) {
+                                        return PopularPeopleCard(
+                                          key: Key('card_$index'),
+                                          model: popularPeopleProvider.popularPeopleModel.results[index],
+                                        );
+                                      },
                                     ),
-                                    popularPeopleProvider.isPaginationLoading
-                                        ? const SizedBox(
-                                            height: 50,
-                                            width: 50,
-                                            child: CommonLoader())
-                                        : const SizedBox(),
+                                    Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: popularPeopleProvider.isPaginationLoading
+                                          ? const SizedBox(
+                                              height: 50,
+                                              width: 50,
+                                              child: CommonLoader())
+                                          : const SizedBox(),
+                                    )
                                   ],
                                 ),
                               );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CommonErrorMessage extends StatelessWidget {
-  const CommonErrorMessage({Key? key}) : super(key: key);
+  const CommonErrorMessage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
